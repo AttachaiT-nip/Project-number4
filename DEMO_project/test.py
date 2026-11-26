@@ -1,4 +1,6 @@
 #update 2 แก้ไข ให้ shell อ่านง่ายขึ้นทำให้เล่นเกมมได้ง่ายขึ้น
+#update3 เพิ่มระบบ เงิน แก้ไข drawมอนเตอร์สวนกลับเวลาคำนวนแล้วว่าตาย และระบบเช็คดาต้า
+#หมายเหตุpatch 3 มอนเตอร์ ยังโจมตีดาเมจเท่าเดิม
 import random
 
 print("START GAME!!!")
@@ -7,7 +9,8 @@ def player():
 	critical_dmg = 1
 	score = 0
 	attack = 10
-	ply_data = {'name':input("your name :") , 'attack':attack , 'hp':100, 'critical':critical_dmg,'score':score}
+	ply_money = 0
+	ply_data = {'name':input("your name :") , 'attack':attack , 'hp':100, 'critical':critical_dmg,'score':score,'money':ply_money}
 	return ply_data
 	print(ply_data)
 
@@ -37,10 +40,12 @@ while True:
 		except:
 			print("try agian")
 			continue
-		#ATTACK
+		#ATTACK Hp drop
 		if attack == 1:
 			mons_rt["hp"] -= plystatus["attack"]
+		if mons_rt["hp"] > 1 and attack ==1:
 			plystatus["hp"] -= mons_rt["attack"]
+		#CRITICAL
 		if attack ==1:
 			percen = random.randint(1,3)
 			if percen == 3:
@@ -56,17 +61,26 @@ while True:
 		elif mons_rt["hp"] <=0:
 			print("your win")
 			plystatus["score"] += 1
+			plystatus["money"] +=10
 			print(plystatus)
 		elif plystatus["hp"] <=0:
 			print("your LOss")
 			print(plystatus)
 		
 	print("try agian")
-	try:
-		chossen1 = int(input("1 to re try"))
-	except:
-		print("write agian")
-		continue
-	if chossen1 != 1:
+	#menu when end game
+	while plystatus["hp"] <=0 or mons_rt["hp"] <=0:
+		print("LOOP")
+		try:
+			print("Check player data press2")
+			chossen1 = int(input(" 0 to retry"))
+		
+		except:
+			print("write agian")
+			continue
+		if chossen1 == 0:
+			break
+		if chossen1 ==2:
+			print(plystatus)
 		break
-	
+
